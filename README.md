@@ -22,7 +22,7 @@ This tool performs rotation and translation correction on each frame of a hypers
 
 ## Usage
 
-1. Open your time-series or Z-stack image in Fiji.
+1. Open your image in Fiji.
 2. Run `Plugins > CCN > CCN Registration`.
 3. Adjust the parameters in the panel:
    - **Registration channel**: Select the channel to compute the structural alignment against.
