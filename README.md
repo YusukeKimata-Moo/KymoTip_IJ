@@ -1,8 +1,8 @@
 # CCN Registration Fiji Plugin
 
-A Fiji/ImageJ plugin for time-series image registration using Normalized Cross-Correlation (NCC).
+A Fiji/ImageJ plugin for time-series image registration using **contour**-based coordinate normalization (CCN) method.
 
-This tool performs rotation and translation correction on each frame of a hyperstack (Multi-channel / single Z-slice / Time-series).
+This tool performs rotation and translation correction on each frame of a hyperstack (Multi-channel / single Z-slice / Time-series). By selecting a specific channel (e.g., cell contour) as a reference, it accurately tracks and corrects sample drift and rotation over time across all channels.
 
 ## Features
 
