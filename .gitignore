@@ -1,0 +1,14 @@
+# ビルド生成物
+build/
+*.class
+*.jar
+
+# ローカルAIツール用
+.claude/
+
+# OSの自動生成ファイル
+.DS_Store
+Thumbs.db
+
+# 参考用のスクリプト等
+*.ipynb
