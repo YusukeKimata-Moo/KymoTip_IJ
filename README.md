@@ -40,4 +40,4 @@ If you use this plugin in your research, please cite the following paper:
 
 ## License
 
-This project is provided under the [MIT License](LICENSE).
+This plugin is provided under the [MIT License](LICENSE).
