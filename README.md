@@ -95,6 +95,38 @@ This command reads contour coordinate text files, computes the Voronoi diagram o
    - **Image size (px)**: Width and height of the output PNG plots (default: 512).
 4. Click **Run Processing**. Result files will be generated per frame in the output directory.
 
+### Kymograph
+
+Generates kymograph images from centerline data, cell masks, and fluorescence signal images.
+
+This command samples pixel brightness along the centerline normal direction (masked to the cell interior) for each time frame, then assembles the profiles into a kymograph image where the X-axis represents time (frames) and the Y-axis represents position along the centerline.
+
+#### Features
+
+- Equal arc-length resampling of centerline points for uniform spatial sampling.
+- Normal-direction brightness sampling with cell mask filtering (only pixels inside the cell are averaged).
+- Configurable sampling half-width (W) for the normal direction scan.
+- Single Channel mode: grayscale 32-bit float kymograph displayed in Fiji.
+- Merge mode: RGB kymograph overlaying two channels (Magenta + Green) from a hyperstack.
+- Automatic Y-axis calibration in micrometers using the user-specified pixel/um scale.
+- Export of per-frame mean brightness data as text files.
+
+#### Usage
+
+1. Open your signal image (stack or hyperstack) and mask image (binary stack) in Fiji.
+2. Prepare the centerline text files from the Centerline command output.
+3. Run `Plugins > KymoTip_IJ > Kymograph`.
+4. Configure parameters:
+   - **Centerline Dir**: Directory containing centerline `.txt` files.
+   - **Output Dir**: Destination folder. A `mean_brightness/` subdirectory and kymograph TIFF will be created.
+   - **Signal Image**: Select the signal image (stack or hyperstack) from the dropdown.
+   - **Mask Image**: Select the binary mask image stack from the dropdown.
+   - **Mode**: `Single Channel` to process one channel, or `Merge` to overlay two channels.
+   - **Channel / Ch1 / Ch2**: Channel number(s) to process (for hyperstacks).
+   - **Sampling half-width W (px)**: Number of pixels to sample on each side of the centerline normal (default: 40).
+   - **Scale (pixel/um)**: Pixel-to-micrometer conversion factor (default: 4.917).
+5. Click **Run Processing**. The kymograph will be displayed in Fiji and saved as a TIFF file.
+
 ## Reference
 
 If you use this plugin in your research, please cite the following paper:

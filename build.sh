@@ -23,7 +23,7 @@ echo "Using JTS jar: $JTS_JAR"
 # Compile
 mkdir -p build
 # In bash on Windows, path separator for java cp is typically ; but inside quotes
-javac -cp "${IJ};${JTS_JAR};${MATH_JAR}" -d build src/CCN_Registration.java src/KymoTip_Centerline.java src/KymoTip_Trajectory.java
+javac -cp "${IJ};${JTS_JAR};${MATH_JAR}" -d build src/CCN_Registration.java src/KymoTip_Centerline.java src/KymoTip_Trajectory.java src/KymoTip_Kymograph.java
 if [ $? -ne 0 ]; then
     echo "Compilation failed."
     exit 1
