@@ -65,6 +65,36 @@ This command extracts the non-zero pixel coordinates from each frame, resorts th
    - **Output directory**: Destination folder for the generated space-separated coordinate files (`.txt`).
 4. Click **Run Trajectory**. Result files will be generated per frame in the selected directory.
 
+### Centerline
+
+Extracts cell centerlines from contour coordinate data using Voronoi-based skeletonization.
+
+This command reads contour coordinate text files, computes the Voronoi diagram of the contour points, extracts the longest internal skeleton path, and refines it through smoothing, endpoint extension, and interpolation.
+
+#### Features
+
+- Voronoi-based skeleton extraction using JTS (Java Topology Suite).
+- Longest-path detection via Dijkstra's algorithm on the internal Voronoi graph.
+- Cumsum-based moving average smoothing for centerline refinement.
+- Automatic endpoint extension toward the farthest contour points.
+- Uniform-density interpolation along the extended centerline.
+- Configurable output image size for visualization.
+- Export centerline coordinates to text files and overlay plots to PNG images.
+
+#### Usage
+
+1. Prepare a directory of contour coordinate text files (e.g., output from the Trajectory command). Each file should contain whitespace-separated X Y coordinates, one point per line.
+2. Run `Plugins > KymoTip_IJ > Centerline`.
+3. Configure parameters:
+   - **Input Contour Data Dir**: Directory containing the contour `.txt` files.
+   - **Output Dir**: Destination folder. Subdirectories `centerline/` (coordinates) and `centerline(Fig)/` (plots) will be created automatically.
+   - **Extension average points (o)**: Number of points used to compute the end slope for extension. Larger values produce straighter endpoints (default: 10).
+   - **Exclude bottom points (m1)**: Points to trim from the bottom end before smoothing (default: 10).
+   - **Exclude tip points (m2)**: Points to trim from the tip end before smoothing (default: 10).
+   - **Smoothing window (mm)**: Window size for the moving average filter. Larger values produce smoother centerlines (default: 65).
+   - **Image size (px)**: Width and height of the output PNG plots (default: 512).
+4. Click **Run Processing**. Result files will be generated per frame in the output directory.
+
 ## Reference
 
 If you use this plugin in your research, please cite the following paper:
