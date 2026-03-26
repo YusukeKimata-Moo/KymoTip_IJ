@@ -23,7 +23,7 @@ public class CCN_Registration implements PlugIn {
     private JButton runBtn;
 
     // ------------------------------------------------------------------ //
-    //  Entry point
+    // Entry point
     // ------------------------------------------------------------------ //
     @Override
     public void run(String arg) {
@@ -52,58 +52,85 @@ public class CCN_Registration implements PlugIn {
         int row = 0;
 
         // Channel
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Registration channel:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Registration channel:"), gbc);
         String[] chs = new String[Math.max(1, maxChannels)];
-        for (int i=0; i<chs.length; i++) chs[i] = "Channel " + (i+1);
+        for (int i = 0; i < chs.length; i++)
+            chs[i] = "Channel " + (i + 1);
         regChannelCb = new JComboBox<>(chs);
-        gbc.gridx = 1; panelFrame.add(regChannelCb, gbc);
+        gbc.gridx = 1;
+        panelFrame.add(regChannelCb, gbc);
         row++;
 
         // Angle Min
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Angle min (deg):"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Angle min (deg):"), gbc);
         angMinTf = new JTextField("-5", 5);
-        gbc.gridx = 1; panelFrame.add(angMinTf, gbc);
+        gbc.gridx = 1;
+        panelFrame.add(angMinTf, gbc);
         row++;
 
         // Angle Max
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Angle max (deg):"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Angle max (deg):"), gbc);
         angMaxTf = new JTextField("5", 5);
-        gbc.gridx = 1; panelFrame.add(angMaxTf, gbc);
+        gbc.gridx = 1;
+        panelFrame.add(angMaxTf, gbc);
         row++;
 
         // Angle Step
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Angle step (deg):"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Angle step (deg):"), gbc);
         angStepTf = new JTextField("1", 5);
-        gbc.gridx = 1; panelFrame.add(angStepTf, gbc);
+        gbc.gridx = 1;
+        panelFrame.add(angStepTf, gbc);
         row++;
 
         // Reference Mode
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Reference mode:"), gbc);
-        refModeCb = new JComboBox<>(new String[]{"First frame", "Sliding window"});
-        gbc.gridx = 1; panelFrame.add(refModeCb, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Reference mode:"), gbc);
+        refModeCb = new JComboBox<>(new String[] { "First frame", "Sliding window" });
+        gbc.gridx = 1;
+        panelFrame.add(refModeCb, gbc);
         row++;
 
         // Sliding Window D
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Sliding window D:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Sliding window D:"), gbc);
         windowDTf = new JTextField("10", 5);
-        gbc.gridx = 1; panelFrame.add(windowDTf, gbc);
+        gbc.gridx = 1;
+        panelFrame.add(windowDTf, gbc);
         row++;
 
         // Fill mode
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Border fill:"), gbc);
-        fillModeCb = new JComboBox<>(new String[]{"Zero", "Random noise"});
-        gbc.gridx = 1; panelFrame.add(fillModeCb, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Border fill:"), gbc);
+        fillModeCb = new JComboBox<>(new String[] { "Zero", "Random noise" });
+        gbc.gridx = 1;
+        panelFrame.add(fillModeCb, gbc);
         row++;
 
         // Display Bit Depth
-        gbc.gridx = 0; gbc.gridy = row; panelFrame.add(new JLabel("Display Bit Depth:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panelFrame.add(new JLabel("Display Bit Depth:"), gbc);
         bitDepthTf = new JTextField(String.valueOf(defaultBitDepth), 5);
-        gbc.gridx = 1; panelFrame.add(bitDepthTf, gbc);
+        gbc.gridx = 1;
+        panelFrame.add(bitDepthTf, gbc);
         row++;
 
         // Run button
         runBtn = new JButton("Run Registration");
-        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.gridwidth = 2;
         panelFrame.add(runBtn, gbc);
 
         runBtn.addActionListener(e -> startRegistration());
@@ -124,12 +151,14 @@ public class CCN_Registration implements PlugIn {
         int regChannel, refMode, windowD, fillMode, displayBitDepth;
         double angMin, angMax, angStep;
         try {
-            // Update channel list if the image has more channels than what's in the combo box
+            // Update channel list if the image has more channels than what's in the combo
+            // box
             int nChannels = imp.getNChannels();
             if (regChannelCb.getItemCount() < nChannels) {
                 int oldSel = regChannelCb.getSelectedIndex();
                 regChannelCb.removeAllItems();
-                for (int i = 0; i < nChannels; i++) regChannelCb.addItem("Channel " + (i + 1));
+                for (int i = 0; i < nChannels; i++)
+                    regChannelCb.addItem("Channel " + (i + 1));
                 regChannelCb.setSelectedIndex(Math.min(oldSel, nChannels - 1));
             }
 
@@ -142,7 +171,8 @@ public class CCN_Registration implements PlugIn {
             fillMode = fillModeCb.getSelectedIndex();
             displayBitDepth = Integer.parseInt(bitDepthTf.getText());
 
-            if (angStep <= 0) throw new NumberFormatException("Angle step must be > 0");
+            if (angStep <= 0)
+                throw new NumberFormatException("Angle step must be > 0");
         } catch (Exception ex) {
             IJ.error("CCN Registration", "Invalid parameter: " + ex.getMessage());
             return;
@@ -153,7 +183,8 @@ public class CCN_Registration implements PlugIn {
 
         Thread thread = new Thread(() -> {
             try {
-                executeRegistration(imp, regChannel, angMin, angMax, angStep, refMode, windowD, fillMode, displayBitDepth);
+                executeRegistration(imp, regChannel, angMin, angMax, angStep, refMode, windowD, fillMode,
+                        displayBitDepth);
             } catch (Exception ex) {
                 IJ.log("Error during registration: " + ex.getMessage());
                 ex.printStackTrace();
@@ -168,10 +199,10 @@ public class CCN_Registration implements PlugIn {
     }
 
     private void executeRegistration(ImagePlus imp, int regChannel, double angMin, double angMax, double angStep,
-                                     int refMode, int windowD, int fillMode, int displayBitDepth) {
+            int refMode, int windowD, int fillMode, int displayBitDepth) {
         int nChannels = imp.getNChannels();
-        int nFrames   = imp.getNFrames();
-        int nSlices   = imp.getNSlices();
+        int nFrames = imp.getNFrames();
+        int nSlices = imp.getNSlices();
 
         boolean swappedAxes = false;
         if (nFrames == 1 && nSlices > 1) {
@@ -193,11 +224,11 @@ public class CCN_Registration implements PlugIn {
         }
 
         // --- Prepare output hyperstack ---
-        int width  = imp.getWidth();
+        int width = imp.getWidth();
         int height = imp.getHeight();
         int bitDepth = imp.getBitDepth();
 
-        ImageStack inStack  = imp.getStack();
+        ImageStack inStack = imp.getStack();
         ImageStack resultStack = new ImageStack(width, height);
 
         IJ.log("Creating output hyperstack: " + nChannels + "C x " + nSlices + "Z x " + nFrames + "T");
@@ -339,11 +370,11 @@ public class CCN_Registration implements PlugIn {
         }
 
         IJ.log("Registration complete. Output: " + nChannels + "C x " + nSlices + "Z x " + nFrames + "T"
-             + " (" + result.getBitDepth() + "-bit)");
+                + " (" + result.getBitDepth() + "-bit)");
     }
 
     // ================================================================== //
-    //  Core algorithm methods
+    // Core algorithm methods
     // ================================================================== //
 
     /**
@@ -352,7 +383,7 @@ public class CCN_Registration implements PlugIn {
      * Returns a (2H-1)*(2W-1) array of correlation values.
      */
     private double[] normxcorr2(float[] template, int tW, int tH,
-                                 float[] image, int iW, int iH) {
+            float[] image, int iW, int iH) {
         int outW = iW + tW - 1;
         int outH = iH + tH - 1;
 
@@ -364,27 +395,32 @@ public class CCN_Registration implements PlugIn {
         double iMean = mean(image);
 
         // Zero-mean template and image
-        float[] tZm  = new float[tW * tH];
+        float[] tZm = new float[tW * tH];
         float[] imZm = new float[iW * iH];
-        for (int i = 0; i < template.length; i++) tZm[i]  = (float)(template[i] - tMean);
-        for (int i = 0; i < image.length; i++)    imZm[i]  = (float)(image[i] - iMean);
+        for (int i = 0; i < template.length; i++)
+            tZm[i] = (float) (template[i] - tMean);
+        for (int i = 0; i < image.length; i++)
+            imZm[i] = (float) (image[i] - iMean);
 
         // Template energy
         double tEnergy = 0;
-        for (float v : tZm) tEnergy += (double)v * v;
+        for (float v : tZm)
+            tEnergy += (double) v * v;
 
         // Cross-correlation via FFT: corr(t, im) = IFFT(conj(FFT(t)) * FFT(im))
         double[] crossCorr = fftCorrelate(tZm, tW, tH, imZm, iW, iH, fftSize);
 
-        // Local energy: sum(im²) under template window, and sum(im) under template window
+        // Local energy: sum(im²) under template window, and sum(im) under template
+        // window
         // Computed via FFT with a ones-kernel of template size
         float[] ones = new float[tW * tH];
         java.util.Arrays.fill(ones, 1.0f);
         float[] imSq = new float[iW * iH];
-        for (int i = 0; i < imZm.length; i++) imSq[i] = imZm[i] * imZm[i];
+        for (int i = 0; i < imZm.length; i++)
+            imSq[i] = imZm[i] * imZm[i];
 
         double[] localSumSq = fftCorrelate(ones, tW, tH, imSq, iW, iH, fftSize);
-        double[] localSum   = fftCorrelate(ones, tW, tH, imZm, iW, iH, fftSize);
+        double[] localSum = fftCorrelate(ones, tW, tH, imZm, iW, iH, fftSize);
 
         // Normalize
         int tSize = tW * tH;
@@ -395,7 +431,8 @@ public class CCN_Registration implements PlugIn {
                 int fftIdx = oy * fftSize + ox;
                 double localEnergy = localSumSq[fftIdx]
                         - (localSum[fftIdx] * localSum[fftIdx]) / tSize;
-                if (localEnergy < 0) localEnergy = 0;
+                if (localEnergy < 0)
+                    localEnergy = 0;
                 double denom = Math.sqrt(localEnergy * tEnergy);
                 result[outIdx] = (denom > 1e-10) ? crossCorr[fftIdx] / denom : 0;
             }
@@ -409,7 +446,7 @@ public class CCN_Registration implements PlugIn {
      * Returns the full fftSize x fftSize result (caller extracts needed region).
      */
     private double[] fftCorrelate(float[] t, int tW, int tH,
-                                   float[] im, int iW, int iH, int fftSize) {
+            float[] im, int iW, int iH, int fftSize) {
         // Pad template into top-left of fftSize x fftSize
         FloatProcessor tFp = new FloatProcessor(fftSize, fftSize);
         for (int y = 0; y < tH; y++)
@@ -423,7 +460,7 @@ public class CCN_Registration implements PlugIn {
                 imFp.setf(x, y, im[y * iW + x]);
 
         // Forward FHT
-        FHT fhtT  = new FHT(tFp);
+        FHT fhtT = new FHT(tFp);
         FHT fhtIm = new FHT(imFp);
         fhtT.transform();
         fhtIm.transform();
@@ -434,7 +471,8 @@ public class CCN_Registration implements PlugIn {
         corrFht.swapQuadrants();
 
         // Extract result — swapQuadrants places the zero-lag at center,
-        // so the "full" correlation output starts at (fftSize/2 - (tH-1), fftSize/2 - (tW-1))
+        // so the "full" correlation output starts at (fftSize/2 - (tH-1), fftSize/2 -
+        // (tW-1))
         int offY = fftSize / 2 - (tH - 1);
         int offX = fftSize / 2 - (tW - 1);
         float[] corrPixels = (float[]) corrFht.getPixels();
@@ -453,7 +491,8 @@ public class CCN_Registration implements PlugIn {
     /** Return the smallest power of 2 >= n. */
     private int nextPowerOf2(int n) {
         int p = 1;
-        while (p < n) p <<= 1;
+        while (p < n)
+            p <<= 1;
         return p;
     }
 
@@ -508,8 +547,10 @@ public class CCN_Registration implements PlugIn {
     /** Cubic interpolation kernel (Catmull-Rom). */
     private double cubicWeight(double x) {
         x = Math.abs(x);
-        if (x <= 1) return 1.5 * x * x * x - 2.5 * x * x + 1;
-        if (x < 2)  return -0.5 * x * x * x + 2.5 * x * x - 4 * x + 2;
+        if (x <= 1)
+            return 1.5 * x * x * x - 2.5 * x * x + 1;
+        if (x < 2)
+            return -0.5 * x * x * x + 2.5 * x * x - 4 * x + 2;
         return 0;
     }
 
@@ -535,7 +576,8 @@ public class CCN_Registration implements PlugIn {
      * Extend a non-square image to square by zero-padding.
      */
     private float[] extendToSquare(float[] img, int w, int h, int sqSize, int fillMode) {
-        if (w == h) return img.clone();
+        if (w == h)
+            return img.clone();
         float[] sq = new float[sqSize * sqSize];
 
         if (h > w) {
@@ -562,7 +604,8 @@ public class CCN_Registration implements PlugIn {
      * Crop square image back to original dimensions.
      */
     private float[] contractFromSquare(float[] sq, int origW, int origH, int sqSize) {
-        if (origW == origH) return sq.clone();
+        if (origW == origH)
+            return sq.clone();
         float[] out = new float[origW * origH];
 
         if (origH > origW) {
@@ -584,7 +627,7 @@ public class CCN_Registration implements PlugIn {
     }
 
     // ================================================================== //
-    //  Utility methods
+    // Utility methods
     // ================================================================== //
 
     /** Extract a single frame (all slices) for a given channel as float arrays. */
@@ -614,7 +657,8 @@ public class CCN_Registration implements PlugIn {
     private float[] toFloat(ImageProcessor ip) {
         int n = ip.getWidth() * ip.getHeight();
         float[] f = new float[n];
-        for (int i = 0; i < n; i++) f[i] = ip.getf(i);
+        for (int i = 0; i < n; i++)
+            f[i] = ip.getf(i);
         return f;
     }
 
@@ -649,7 +693,8 @@ public class CCN_Registration implements PlugIn {
 
     private double mean(float[] a) {
         double s = 0;
-        for (float v : a) s += v;
+        for (float v : a)
+            s += v;
         return s / a.length;
     }
 

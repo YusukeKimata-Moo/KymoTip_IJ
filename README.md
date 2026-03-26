@@ -2,6 +2,13 @@
 
 A Fiji/ImageJ plugin suite for quantitative analysis of time-lapse cell imaging. This is the ImageJ/Fiji implementation of the KymoTip toolbox.
 
+## Installation
+
+1. Go to the [Releases](../../releases) page.
+2. Download the latest `KymoTip_IJ.jar`.
+3. Place the downloaded `.jar` file into the `plugins` folder of your Fiji/ImageJ installation.
+4. Restart Fiji. Commands will appear under the `Plugins > KymoTip_IJ` menu.
+
 ## Commands
 
 ### CCN Registration
@@ -19,14 +26,7 @@ This command performs rotation and translation correction on each frame of a hyp
 - Border filling options (Zero or Random noise) after transformation.
 - Display bit-depth customization for viewing the result hyperstack.
 
-## Installation
-
-1. Go to the [Releases](../../releases) page.
-2. Download the latest `KymoTip_IJ.jar`.
-3. Place the downloaded `.jar` file into the `plugins` folder of your Fiji/ImageJ installation.
-4. Restart Fiji. Commands will appear under the `Plugins > KymoTip_IJ` menu.
-
-## Usage
+#### Usage
 
 1. Open your image in Fiji.
 2. Run `Plugins > KymoTip_IJ > CCN Registration`.
@@ -37,6 +37,33 @@ This command performs rotation and translation correction on each frame of a hyp
    - **Border fill**: Area left blank after translation/rotation can be filled with `Zero` or `Random noise`.
    - **Display Bit Depth**: Configure the viewing LUT range scaling of the output.
 4. Click **Run Registration**. The panel will remain open, allowing you to instantly tweak parameters and re-run if needed.
+
+### Trajectory
+
+Extracts cell trajectories from binarized time-lapse images with smoothing options.
+
+This command extracts the non-zero pixel coordinates from each frame, resorts them into a logical chain using a nearest-neighbor algorithm, and applies smoothing (LOESS or Moving Average).
+
+#### Features
+
+- Nearest-neighbor chain resort algorithm for logical point ordering.
+- LOESS (Locally Estimated Scatterplot Smoothing) using Apache Commons Math.
+- Cyclic Moving Average for periodic smoothing.
+- Batch processing of time-lapse hyperstacks.
+- Export results to space-separated text files.
+
+#### Usage
+
+1. Open a binarized 8-bit image stack (e.g. from `Process > Binary > Outline`).
+2. Run `Plugins > KymoTip_IJ > Trajectory`.
+3. Configure parameters:
+   - **Linkage distance**: Maximum pixel distance to connect adjacent points in the nearest-neighbor chain.
+   - **Smoothing method**: Choose between `LOESS` (robust local regression) or `Moving Average`.
+   - **LOESS degree / fraction**: Tuning parameters for LOESS polynomial degree (robustness iterations) and bandwidth.
+   - **Moving Avg window**: Window size for the cyclic moving average.
+   - **Wraparound points**: Number of points to extend the periodic boundary for consistent start/end smoothing (LOESS only).
+   - **Output directory**: Destination folder for the generated space-separated coordinate files (`.txt`).
+4. Click **Run Trajectory**. Result files will be generated per frame in the selected directory.
 
 ## Reference
 
