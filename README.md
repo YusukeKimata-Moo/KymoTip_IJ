@@ -1,10 +1,16 @@
-# CCN Registration Fiji Plugin
+# KymoTip_IJ
 
-A Fiji/ImageJ plugin for time-series image registration using **contour**-based coordinate normalization (CCN) method.
+A Fiji/ImageJ plugin suite for quantitative analysis of time-lapse cell imaging. This is the ImageJ/Fiji implementation of the KymoTip toolbox.
 
-This tool performs rotation and translation correction on each frame of a hyperstack (Multi-channel / single Z-slice / Time-series). By selecting a specific channel (e.g., cell contour) as a reference, it accurately tracks and corrects sample drift and rotation over time across all channels.
+## Commands
 
-## Features
+### CCN Registration
+
+Contour-based coordinate normalization (CCN) for time-series image registration.
+
+This command performs rotation and translation correction on each frame of a hyperstack (Multi-channel / single Z-slice / Time-series). By selecting a specific channel (e.g., cell contour) as a reference, it accurately tracks and corrects sample drift and rotation over time across all channels.
+
+#### Features
 
 - Rotation + Translation correction via Fast Hartley Transform (FHT) based Normalized Cross-Correlation.
 - Supports multi-channel, single Z-stack, and Time-series hyperstacks.
@@ -16,14 +22,14 @@ This tool performs rotation and translation correction on each frame of a hypers
 ## Installation
 
 1. Go to the [Releases](../../releases) page.
-2. Download the latest `CCN_Registration.jar`.
+2. Download the latest `KymoTip_IJ.jar`.
 3. Place the downloaded `.jar` file into the `plugins` folder of your Fiji/ImageJ installation.
-4. Restart Fiji. The plugin will appear in the `Plugins > CCN > CCN Registration` menu.
+4. Restart Fiji. Commands will appear under the `Plugins > KymoTip_IJ` menu.
 
 ## Usage
 
 1. Open your image in Fiji.
-2. Run `Plugins > CCN > CCN Registration`.
+2. Run `Plugins > KymoTip_IJ > CCN Registration`.
 3. Adjust the parameters in the panel:
    - **Registration channel**: Select the channel to compute the structural alignment against.
    - **Angle search range (deg)**: Define the min, max, and step for rotation correction.
@@ -40,4 +46,4 @@ If you use this plugin in your research, please cite the following paper:
 
 ## License
 
-This plugin is provided under the [MIT License](LICENSE).
+This project is provided under the [MIT License](LICENSE).

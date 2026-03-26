@@ -41,7 +41,7 @@ public class CCN_Registration implements PlugIn {
         int defaultBitDepth = (imp != null) ? imp.getBitDepth() : 16;
         int maxChannels = (imp != null) ? imp.getNChannels() : 5;
 
-        panelFrame = new JFrame("CCN Registration");
+        panelFrame = new JFrame("KymoTip_IJ: CCN Registration");
         panelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         panelFrame.setLayout(new GridBagLayout());
         panelFrame.setResizable(false);
