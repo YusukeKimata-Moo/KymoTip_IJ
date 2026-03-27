@@ -4,6 +4,8 @@ A Fiji/ImageJ plugin suite for quantitative analysis of time-lapse cell imaging.
 
 ## Installation
 
+**Requires Fiji with Java 21 or later** (included in Fiji releases from 2024 onwards).
+
 1. Go to the [Releases](../../releases) page.
 2. Download the latest `KymoTip_IJ.jar`.
 3. Place the downloaded `.jar` file into the `plugins` folder of your Fiji/ImageJ installation.
