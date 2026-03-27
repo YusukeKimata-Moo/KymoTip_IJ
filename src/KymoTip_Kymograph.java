@@ -1,5 +1,7 @@
 import ij.IJ;
 import ij.ImagePlus;
+import ij.ImageStack;
+import ij.CompositeImage;
 import ij.WindowManager;
 import ij.plugin.PlugIn;
 import ij.process.*;
@@ -419,40 +421,40 @@ public class KymoTip_Kymograph implements PlugIn {
                                          int numFrames, File outDir) {
         int height = Math.max(1, (int) Math.ceil(maxDist) + 1) + KYMO_PADDING;
 
-        // Find max brightness for normalization
-        double max1 = 0, max2 = 0;
-        for (int f = 0; f < numFrames; f++) {
-            for (double v : allBright1[f]) if (v > max1) max1 = v;
-            for (double v : allBright2[f]) if (v > max2) max2 = v;
-        }
-        if (max1 == 0) max1 = 1;
-        if (max2 == 0) max2 = 1;
-
-        ColorProcessor cp = new ColorProcessor(numFrames, height);
+        FloatProcessor fp1 = new FloatProcessor(numFrames, height);
+        FloatProcessor fp2 = new FloatProcessor(numFrames, height);
 
         for (int f = 0; f < numFrames; f++) {
             for (int y = 0; y < height; y++) {
-                double dist = height - 1 - y; // flip Y; padding naturally at top
-                double v1 = interpZero(allDist[f], allBright1[f], dist);
-                double v2 = interpZero(allDist[f], allBright2[f], dist);
-
-                // Ch1 = Green = (0, G, 0), Ch2 = Magenta = (R, 0, B)
-                int g = clamp255(v1 / max1 * 255);
-                int r = clamp255(v2 / max2 * 255);
-                int b = r;
-
-                cp.set(f, y, (r << 16) | (g << 8) | b);
+                double dist = height - 1 - y;
+                fp1.setf(f, y, (float) interpZero(allDist[f], allBright1[f], dist));
+                fp2.setf(f, y, (float) interpZero(allDist[f], allBright2[f], dist));
             }
         }
 
-        ImagePlus kymo = new ImagePlus("Kymograph (Merge)", cp);
-        Calibration cal = kymo.getCalibration();
+        ImageStack stack = new ImageStack(numFrames, height);
+        stack.addSlice("Ch1", fp1);
+        stack.addSlice("Ch2", fp2);
+
+        ImagePlus kymo = new ImagePlus("Kymograph (Merge)", stack);
+        kymo.setDimensions(2, 1, 1); // 2 channels, 1 slice, 1 frame
+        CompositeImage comp = new CompositeImage(kymo, CompositeImage.COMPOSITE);
+
+        // Ch1 = Green, Ch2 = Magenta
+        comp.setC(1);
+        comp.setChannelLut(LUT.createLutFromColor(Color.GREEN));
+        comp.setC(2);
+        comp.setChannelLut(LUT.createLutFromColor(Color.MAGENTA));
+
+        Calibration cal = comp.getCalibration();
         cal.pixelHeight = 1.0 / pixelPerMicron;
         cal.setYUnit("um");
-        kymo.show();
+
+        comp.resetDisplayRanges();
+        comp.show();
 
         File kymoFile = new File(outDir, "kymograph_merge.tif");
-        IJ.saveAs(kymo, "Tiff", kymoFile.getAbsolutePath());
+        IJ.saveAs(comp, "Tiff", kymoFile.getAbsolutePath());
         IJ.log("Saved: " + kymoFile.getAbsolutePath());
     }
 

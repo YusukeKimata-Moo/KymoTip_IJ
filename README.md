@@ -80,6 +80,7 @@ This command reads contour coordinate text files, computes the Voronoi diagram o
 - Uniform-density interpolation along the extended centerline.
 - Configurable output image size for visualization.
 - Export centerline coordinates to text files and overlay plots to PNG images.
+- Cell length measurement: outputs a `cell_length.csv` summarizing the centerline arc length (in μm) for each frame.
 
 #### Usage
 
@@ -93,7 +94,8 @@ This command reads contour coordinate text files, computes the Voronoi diagram o
    - **Exclude tip points (m2)**: Points to trim from the tip end before smoothing (default: 10).
    - **Smoothing window (mm)**: Window size for the moving average filter. Larger values produce smoother centerlines (default: 65).
    - **Image size (px)**: Width and height of the output PNG plots (default: 512).
-4. Click **Run Processing**. Result files will be generated per frame in the output directory.
+   - **Scale (pixel/μm)**: Pixel-to-micrometer conversion factor for cell length calculation (default: 4.917).
+4. Click **Run Processing**. Result files will be generated per frame in the output directory. A `cell_length.csv` file (columns: `frame`, `length_um`) is also saved in the output directory.
 
 ### Kymograph
 
@@ -107,7 +109,7 @@ This command samples pixel brightness along the centerline normal direction (mas
 - Normal-direction brightness sampling with cell mask filtering (only pixels inside the cell are averaged).
 - Configurable sampling half-width (W) for the normal direction scan.
 - Single Channel mode: grayscale 32-bit float kymograph displayed in Fiji.
-- Merge mode: RGB kymograph overlaying two channels (Magenta + Green) from a hyperstack.
+- Merge mode: 32-bit composite kymograph with two channels (default LUT: Ch1 = Green, Ch2 = Magenta). LUT colors, contrast, and channel visibility can be freely adjusted in Fiji via `Image > Color > Channels Tool`.
 - Automatic Y-axis calibration in micrometers using the user-specified pixel/um scale.
 - Export of per-frame mean brightness data as text files.
 

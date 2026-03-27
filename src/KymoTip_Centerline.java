@@ -18,7 +18,7 @@ public class KymoTip_Centerline implements PlugIn {
 
     private JFrame frame;
     private JTextField txtInDir, txtOutDir;
-    private JTextField txtO, txtM1, txtM2, txtMm, txtImgSize;
+    private JTextField txtO, txtM1, txtM2, txtMm, txtImgSize, txtScale;
     private JButton btnRun;
 
     private int o = 10;
@@ -26,6 +26,7 @@ public class KymoTip_Centerline implements PlugIn {
     private int m2 = 10;
     private int mm = 65;
     private int imgSize = 512;
+    private double pixelPerMicron = 4.917;
 
     @Override
     public void run(String arg) {
@@ -78,6 +79,7 @@ public class KymoTip_Centerline implements PlugIn {
         addParamRow(frame, gbc, row++, "Exclude tip points (m2):", txtM2 = new JTextField(String.valueOf(m2), 5));
         addParamRow(frame, gbc, row++, "Smoothing window (mm):", txtMm = new JTextField(String.valueOf(mm), 5));
         addParamRow(frame, gbc, row++, "Image size (px):", txtImgSize = new JTextField(String.valueOf(imgSize), 5));
+        addParamRow(frame, gbc, row++, "Scale (pixel/\u00B5m):", txtScale = new JTextField(String.valueOf(pixelPerMicron), 5));
 
         // Run
         btnRun = new JButton("Run Processing");
@@ -118,6 +120,7 @@ public class KymoTip_Centerline implements PlugIn {
             m2 = Integer.parseInt(txtM2.getText());
             mm = Integer.parseInt(txtMm.getText());
             imgSize = Integer.parseInt(txtImgSize.getText());
+            pixelPerMicron = Double.parseDouble(txtScale.getText().trim());
         } catch (NumberFormatException e) {
             IJ.error("Invalid numeric parameter.");
             return;
@@ -140,8 +143,11 @@ public class KymoTip_Centerline implements PlugIn {
         imgOutDir.mkdirs();
 
         IJ.log("Found " + files.length + " contour files to process.");
-        
-        for (File f : files) {
+
+        List<String[]> lengthRecords = new ArrayList<>();
+
+        for (int fi = 0; fi < files.length; fi++) {
+            File f = files[fi];
             try {
                 IJ.log("Processing " + f.getName() + "...");
                 List<Coordinate> contour = loadContour(f);
@@ -168,7 +174,17 @@ public class KymoTip_Centerline implements PlugIn {
                 double avgDist = calculateAverageDistance(extended);
                 List<Coordinate> complete = interpolateCenterline(extended, avgDist);
 
-                // Save txt
+                // Calculate cell length (sum of inter-point distances, in microns)
+                double lengthPx = 0;
+                for (int i = 1; i < complete.size(); i++) {
+                    double dx = complete.get(i).x - complete.get(i - 1).x;
+                    double dy = complete.get(i).y - complete.get(i - 1).y;
+                    lengthPx += Math.sqrt(dx * dx + dy * dy);
+                }
+                double lengthUm = lengthPx / pixelPerMicron;
+                lengthRecords.add(new String[]{String.valueOf(fi + 1), String.format("%.6f", lengthUm)});
+
+                // Save txt (pixel coordinates)
                 String baseName = f.getName().replace(".txt", "");
                 saveCenterline(complete, new File(txtOutDir, baseName + ".txt"));
 
@@ -180,6 +196,21 @@ public class KymoTip_Centerline implements PlugIn {
                 e.printStackTrace();
             }
         }
+
+        // Save cell length CSV
+        try {
+            File csvFile = new File(outDir, "cell_length.csv");
+            try (PrintWriter pw = new PrintWriter(new FileWriter(csvFile))) {
+                pw.println("frame,length_um");
+                for (String[] rec : lengthRecords) {
+                    pw.println(rec[0] + "," + rec[1]);
+                }
+            }
+            IJ.log("Saved: " + csvFile.getAbsolutePath());
+        } catch (IOException e) {
+            IJ.log("Error saving cell_length.csv: " + e.getMessage());
+        }
+
         IJ.log("Processing completed.");
     }
 
